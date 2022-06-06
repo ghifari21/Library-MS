@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bibliography;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PublisherController extends Controller
 {
@@ -37,7 +39,28 @@ class PublisherController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email:dns|unique:publishers',
+            'phone' => 'required',
+            'address' => 'required',
+            'photo' => 'image|file|max:5120'
+        ]);
+
+        if ($request->file('photo')) {
+            $validatedData['photo'] = $request->file('photo')->store('publishers');
+        }
+
+        $publisher = Publisher::latest()->first();
+        if ($publisher) {
+            $validatedData['publisher_code'] = 'P' . $publisher->id + 1;
+        } else {
+            $validatedData['publisher_code'] = 'P1';
+        }
+
+        Publisher::create($validatedData);
+
+        return redirect('/dashboard/publishers')->with('success', 'New publisher has been added!');
     }
 
     /**
@@ -48,7 +71,10 @@ class PublisherController extends Controller
      */
     public function show(Publisher $publisher)
     {
-        //
+        return view('dashboard.admin.publishers.show', [
+            'publisher' => $publisher,
+            'bibliographies' => Bibliography::where('publisher_id', $publisher->id)->get()
+        ]);
     }
 
     /**
@@ -59,7 +85,9 @@ class PublisherController extends Controller
      */
     public function edit(Publisher $publisher)
     {
-        //
+        return view('dashboard.admin.publishers.edit', [
+            'publisher' => $publisher
+        ]);
     }
 
     /**
@@ -71,7 +99,31 @@ class PublisherController extends Controller
      */
     public function update(Request $request, Publisher $publisher)
     {
-        //
+        $rules = [
+            'name' => 'required|max:255',
+            'phone' => 'required',
+            'address' => 'required',
+            'photo' => 'image|file|max:5120'
+        ];
+
+        if ($request->email != $publisher->email) {
+            $rules['email'] = 'required|email:dns|unique:publishers';
+        } else {
+            $rules['email'] = 'required|email:dns';
+        }
+
+        $validatedData = $request->validate($rules);
+
+        if ($request->file('photo')) {
+            if ($request->old_photo) {
+                Storage::delete($request->old_photo);
+            }
+            $validatedData['photo'] = $request->file('photo')->store('publishers');
+        }
+
+        Publisher::where('id', $publisher->id)->update($validatedData);
+
+        return redirect('/dashboard/publishers')->with('success', 'Publisher has been updated!');
     }
 
     /**
@@ -82,6 +134,12 @@ class PublisherController extends Controller
      */
     public function destroy(Publisher $publisher)
     {
-        //
+        if ($publisher->photo) {
+            Storage::delete($publisher->photo);
+        }
+
+        Publisher::destroy($publisher->id);
+
+        return redirect('/dashboard/publishers')->with('success', 'Publisher has been deleted!');
     }
 }
