@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\BibliographyController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
@@ -98,4 +99,19 @@ Route::get('/dashboard/categories/{category:category_code}/edit', [CategoryContr
 Route::put('/dashboard/categories/{category:category_code}', [CategoryController::class, 'update'])->name('categories.update')->middleware('admin');
 
 Route::delete('/dashboard/categories/{category:category_code}', [CategoryController::class, 'destroy'])->name('categories.destroy')->middleware('admin');
+
+// -- BIBLIOGRAPHY --
+Route::get('/dashboard/bibliographies', [BibliographyController::class, 'index'])->name('bibliographies.index')->middleware('admin');
+
+Route::get('/dashboard/bibliographies/create', [BibliographyController::class, 'create'])->name('bibliographies.create')->middleware('admin');
+
+Route::post('/dashboard/bibliographies', [BibliographyController::class, 'store'])->name('bibliographies.store')->middleware('admin');
+
+Route::get('/dashboard/bibliographies/{bibliography:book_code}', [BibliographyController::class, 'show'])->name('bibliographies.show')->middleware('admin');
+
+Route::get('/dashboard/bibliographies/{bibliography:book_code}/edit', [BibliographyController::class, 'edit'])->name('bibliographies.edit')->middleware('admin');
+
+Route::put('/dashboard/bibliographies/{bibliography:book_code}', [BibliographyController::class, 'update'])->name('bibliographies.update')->middleware('admin');
+
+Route::delete('/dashboard/bibliographies/{bibliography:book_code}', [BibliographyController::class, 'destroy'])->name('bibliographies.destroy')->middleware('admin');
 // ADMIN AUTHORIZATION END
