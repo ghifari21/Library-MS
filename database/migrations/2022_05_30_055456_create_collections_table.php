@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('collection_code')->unique();
             $table->string('registry_number')->unique();
             $table->foreignId('bibliography_id')->constrained('bibliographies')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('stored_self');
+            $table->string('stored_shelf');
             $table->string('condition');
             $table->boolean('is_available')->default(true);
             $table->timestamps();
