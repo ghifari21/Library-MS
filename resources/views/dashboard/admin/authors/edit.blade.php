@@ -36,7 +36,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="photo" class="form-label">Photo Profile</label>
+                    <label for="photo" class="form-label">Photo</label>
                     <input type="hidden" name="old_photo" value="{{ $author->photo }}">
                     <input class="form-control @error('photo') is-invalid @enderror" type="file" id="photo" name="photo" onchange="previewImage()">
                     @if ($author->photo)
@@ -50,7 +50,7 @@
                         </div>
                     @enderror
                 </div>
-                <button class="w-100 btn btn-lg btn-primary" type="submit">Add</button>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Update</button>
             </form>
         </main>
     </div>

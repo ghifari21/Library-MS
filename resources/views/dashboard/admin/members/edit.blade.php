@@ -98,7 +98,7 @@
                         </div>
                     @enderror
                 </div>
-                <button class="w-100 btn btn-lg btn-primary" type="submit">Update Profile</button>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Update</button>
             </form>
         </main>
     </div>

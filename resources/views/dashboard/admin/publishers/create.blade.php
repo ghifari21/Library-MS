@@ -9,11 +9,11 @@
     <li class="breadcrumb-item active" aria-current="page">Create</li>
   </ol>
 </nav>
-<h2 class="text-center mb-3">Register Form</h2>
+<h2 class="text-center mb-3">Add Publisher Form</h2>
 <div class="row justify-content-center">
     <div class="col-lg-8">
         <main class="form-registration w-100 mt-3 mb-5">
-            <form action="/dashboard/members" method="POST" enctype="multipart/form-data">
+            <form action="/dashboard/publishers" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-floating mb-3">
                     <input type="text" name="name" class="form-control rounded-top @error('name') is-invalid @enderror" id="name" placeholder="Name" required value="{{ old('name') }}">
@@ -25,18 +25,18 @@
                     @enderror
                 </div>
                 <div class="row">
-                    <div class="col-md-7">
+                    <div class="col-md-6">
                         <div class="form-floating mb-3">
-                            <input type="text" name="nik" class="form-control @error('nik') is-invalid @enderror" id="nik" placeholder="NIK" required value="{{ old('nik') }}">
-                            <label for="nik">NIK</label>
-                            @error('nik')
+                            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="email" placeholder="name@example.com" required value="{{ old('email') }}">
+                            <label for="email">Email address</label>
+                            @error('email')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <div class="form-floating mb-3">
                             <input type="tel" name="phone" class="form-control @error('phone') is-invalid @enderror" id="phone" placeholder="Phone" required value="{{ old('phone') }}">
                             <label for="phone">Phone</label>
@@ -57,50 +57,8 @@
                         </div>
                     @enderror
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3">
-                            <input type="text" name="username" class="form-control @error('username') is-invalid @enderror" id="username" placeholder="Username" required value="{{ old('username') }}">
-                            <label for="username">Username</label>
-                            @error('username')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3">
-                            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="email" placeholder="name@example.com" required value="{{ old('email') }}">
-                            <label for="email">Email address</label>
-                            @error('email')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" id="password" placeholder="Password" required>
-                    <label for="password">Password</label>
-                    @error('password')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="password" name="repassword" class="form-control rounded-bottom @error('repassword') is-invalid @enderror" id="repassword" placeholder="Re-enter Password" required>
-                    <label for="repassword">Re-enter Password</label>
-                    @error('password')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
                 <div class="mb-3">
-                    <label for="photo" class="form-label">Photo Profile</label>
+                    <label for="photo" class="form-label">Photo</label>
                     <input class="form-control @error('photo') is-invalid @enderror" type="file" id="photo" name="photo" onchange="previewImage()">
                     <img class="img-preview img-thumbnail rounded-circle my-3 col-sm-3 d-none">
                     @error('photo')
@@ -109,7 +67,7 @@
                         </div>
                     @enderror
                 </div>
-                <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Add</button>
             </form>
         </main>
     </div>
