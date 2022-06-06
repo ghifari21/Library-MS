@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('title');
             $table->year('published_year');
             $table->string('language');
-            $table->integer('stock');
-            $table->string('photo');
+            $table->integer('stock')->default(0);
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }
