@@ -15,7 +15,15 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 @endif
-<a class="btn btn-primary mb-3" href="/dashboard/authors/create"><span data-feather="user-plus"></span> Add Author</a>
+<div class="container d-flex justify-content-xl-between p-0 m-0">
+    <a class="btn btn-primary mb-3" href="/dashboard/authors/create"><span data-feather="user-plus"></span> Add Author</a>
+    <form action="/dashboard/authors" method="get">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search..." name="search" value="{{ request('search') }}">
+            <button class="btn btn-primary" type="submit" id="search"><span data-feather="search"></span> Search</button>
+        </div>
+    </form>
+</div>
 @if ($authors->count())
 <div class="table-responsive">
     <table class="table table-striped table-hover">

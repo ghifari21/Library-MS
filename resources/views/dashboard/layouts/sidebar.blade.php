@@ -54,6 +54,9 @@
         <ul class="nav flex-column justify-content-end mb-4" style="heigth: 100%">
             <hr>
             <li class="nav-item">
+                <a href="/home" class="nav-link"><span data-feather="external-link"></span> Back</a>
+            </li>
+            <li class="nav-item">
                 <form action="/logout" method="POST">
                     @csrf
                     <button type="submit" class="nav-link border-0 bg-light"><span data-feather="log-out"></span> Logout</button>

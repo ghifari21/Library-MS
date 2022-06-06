@@ -17,7 +17,7 @@ class PublisherController extends Controller
     public function index()
     {
         return view('dashboard.admin.publishers.index', [
-            'publishers' => Publisher::all()
+            'publishers' => Publisher::filter(request(['search']))->orderBy('publisher_code', 'ASC')->paginate(25)->withQueryString()
         ]);
     }
 

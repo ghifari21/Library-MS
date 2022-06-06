@@ -15,15 +15,25 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 @endif
-<a class="btn btn-primary mb-3" href="/dashboard/members/create"><span data-feather="user-plus"></span> Add Member</a>
+<div class="container d-flex justify-content-xl-between p-0 m-0">
+    <a class="btn btn-primary mb-3" href="/dashboard/members/create"><span data-feather="user-plus"></span> Add Member</a>
+    <form action="/dashboard/members" method="get">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search..." name="search" value="{{ request('search') }}">
+            <button class="btn btn-primary" type="submit" id="search"><span data-feather="search"></span> Search</button>
+        </div>
+    </form>
+</div>
+@if ($members->count())
 <div class="table-responsive">
     <table class="table table-striped table-hover">
         <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col" style="width: 15%">Member Code</th>
-                <th scope="col" style="width: 40%">Name</th>
+                <th scope="col" style="width: 30%">Name</th>
                 <th scope="col">Email</th>
+                <th scope="col">Last Updated</th>
                 <th scope="col" style="width: 10%">Action</th>
             </tr>
         </thead>
@@ -34,6 +44,7 @@
                 <td>{{ $member->member_code }}</td>
                 <td>{{ $member->user->name }}</td>
                 <td>{{ $member->user->email }}</td>
+                <td>{{ $member->updated_at->diffForHumans() }}</td>
                 <td>
                     <a class="badge bg-info" href="/dashboard/members/{{ $member->user->username }}"><span data-feather="eye"></span></a>
                     <a class="badge bg-warning" href="/dashboard/members/{{ $member->user->username }}/edit"><span data-feather="edit"></span></a>
@@ -48,4 +59,7 @@
         </tbody>
     </table>
 </div>
+@else
+<p class="text-center mb-3 fs-5">No member found.</p>
+@endif
 @endsection
