@@ -122,7 +122,12 @@
                 <td>{{ $circulation->status }}</td>
                 <td>
                     <a class="badge bg-info" href="/dashboard/transactions/{{ $circulation->transaction_code }}"><span data-feather="eye"></span></a>
-                    <a class="badge bg-warning" href="/dashboard/transactions/{{ $circulation->transaction_code }}/edit"><span data-feather="edit"></span></a>
+                    <form action="/dashboard/transactions/{{ $circulation->transaction_code }}" method="post" class="d-inline">
+                        @method('put')
+                        @csrf
+                        <input type="hidden" name="status" value="Returned">
+                        <button class="badge bg-warning border-0" type="submit" onclick="return confirm('Are you sure?')"><span data-feather="edit"></span></button>
+                    </form>
                     <form action="/dashboard/transactions/{{ $circulation->transaction_code }}" method="post" class="d-inline">
                         @method('delete')
                         @csrf

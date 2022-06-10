@@ -18,7 +18,7 @@ class CirculationController extends Controller
     public function index()
     {
         return view('dashboard.admin.transactions.index', [
-            'circulations' => Circulation::all()
+            'circulations' => Circulation::orderBy('status')->get()
         ]);
     }
 
@@ -119,7 +119,15 @@ class CirculationController extends Controller
      */
     public function update(Request $request, Circulation $circulation)
     {
-        //
+        $validatedData = $request->validate([
+            'status' => 'required'
+        ]);
+
+        $validatedData['returned_date'] = today();
+
+        Circulation::where('id', $circulation->id)->update($validatedData);
+
+        return redirect('/dashboard/transactions')->with('success', 'Collection has been returned!');
     }
 
     /**

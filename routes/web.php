@@ -137,6 +137,8 @@ Route::post('/dashboard/transactions/{collection:collection_code}', [Circulation
 
 Route::get('/dashboard/transactions/{circulation:transaction_code}', [CirculationController::class, 'show'])->name('circulations.show')->middleware('admin');
 
+Route::put('/dashboard/transactions/{circulation:transaction_code}', [CirculationController::class, 'update'])->name('circulations.update')->middleware('admin');
+
 Route::get('/ticket/{circulation:transaction_code}', [CirculationController::class, 'ticket'])->name('ticket');
 
 Route::get('/transaction/{circulation:transaction_code}', [CirculationController::class, 'transaction'])->name('transaction');

@@ -10,7 +10,13 @@
   </ol>
 </nav>
 <h2 class="text-center mb-3">Transaction</h2>
-<div class="row mt-5">
+<form action="/dashboard/transactions/{{ $circulation->transaction_code }}" method="post" class="mt-3">
+    @method('put')
+    @csrf
+    <input type="hidden" name="status" value="Returned">
+    <button class="btn btn-warning" type="submit" onclick="return confirm('Are you sure?')">Return Collection</button>
+</form>
+<div class="row mt-3">
     <div class="col-md-2 mb-3">
         @if ($circulation->collection->bibliography->photo)
             <img class="img-thumbnail" src="{{ asset('storage/' . $circulation->collection->bibliography->photo) }}" alt="{{ $circulation->collection->bibliography->title }}">
