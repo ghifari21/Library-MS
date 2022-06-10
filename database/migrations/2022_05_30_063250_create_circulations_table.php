@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('returned_date')->nullable();
             $table->integer('duration');
             $table->date('return_deadline');
-            $table->string('status')->default('borrowed');
+            $table->string('status')->default('Borrowed');
             $table->timestamps();
         });
     }
