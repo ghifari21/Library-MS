@@ -10,10 +10,16 @@
   </ol>
 </nav>
 <h2 class="text-center mb-3">Bibliography</h2>
+@if (session()->has('success'))
+<div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
 <div class="row mt-5">
     <div class="col-md-2 mb-3">
         @if ($bibliography->photo)
-            <img class="img-thumbnail" src="{{ asset('storage/' . $bibliography->photo) }}" alt="{{ $bibliography->name }}">
+            <img class="img-thumbnail" src="{{ asset('storage/' . $bibliography->photo) }}" alt="{{ $bibliography->title }}">
         @else
             <img class="img-thumbnail" src="/img/blank-cover.png" alt="blank">
         @endif
@@ -69,17 +75,19 @@
 <div class="row mt-3">
     <div class="col-md-12">
         <h2 class="text-center mb-3">Collections</h2>
+        <a class="btn btn-primary mb-3" href="/dashboard/bibliographies/{{ $bibliography->book_code }}/collections/create"><span data-feather="plus"></span> Add Collection</a>
         @if ($collections->count())
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Collection Code</th>
-                        <th scope="col">Registry Number</th>
+                        <th scope="col" style="width: 10%;">Collection Code</th>
+                        <th scope="col" style="width: 25%;">Registry Number</th>
                         <th scope="col">Stored Shelf</th>
                         <th scope="col">Condition</th>
                         <th scope="col" style="width: 10%;">Availability</th>
+                        <th scope="col" style="width: 10%;">Action</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -92,10 +100,18 @@
                         <td>{{ $collection->condition }}</td>
                         <td>
                             @if ($collection->is_available)
-                            <a href="#" class="btn btn-success">Available</a>
+                            <a href="/dashboard/transactions/{{ $collection->collection_code }}/create" class="btn btn-success">Available</a>
                             @else
                             <button type="button" class="btn btn-danger">Unavailable</button>
                             @endif
+                        </td>
+                        <td>
+                            <a class="badge bg-warning" href="/dashboard/collections/{{ $collection->collection_code }}/edit"><span data-feather="edit"></span></a>
+                            <form action="/dashboard/collections/{{ $collection->collection_code }}" method="post" class="d-inline">
+                                @method('delete')
+                                @csrf
+                                <button class="badge bg-danger border-0" type="submit" onclick="return confirm('Are you sure?')"><span data-feather="x-circle"></span></button>
+                            </form>
                         </td>
                     </tr>
                     @endforeach

@@ -10,6 +10,12 @@
   </ol>
 </nav>
 <h2 class="text-center mb-3">Member</h2>
+@if (session()->has('failed'))
+<div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+    {{ session('failed') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
 <div class="row mt-5">
     <div class="col-md-2 mb-3">
         @if ($member->photo)
@@ -73,6 +79,7 @@
                         <th scope="col">Returned Date</th>
                         <th scope="col">Return Deadline</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -90,12 +97,9 @@
                         @endif
                         </td>
                         <td>{{ $circulation->return_deadline }}</td>
+                        <td>{{ $circulation->status }}</td>
                         <td>
-                            @if ($circulation->status === "borrowed")
-                                Borrowed
-                            @elseif ($circulation->status === "returned")
-                                Returned
-                            @endif
+                        <a class="btn btn-info" href="/dashboard/transactions/{{ $circulation->transaction_code }}">Detail</a>
                         </td>
                     </tr>
                     @endforeach

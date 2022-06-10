@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BibliographyController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CirculationController;
+use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PageController;
@@ -39,8 +41,8 @@ Route::post('/register', [RegisterController::class, 'store'])->name('register.s
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index')->middleware('auth');
 
-// ADMIN AUTHORIZATION START
-// -- MEMBER --
+// ADMIN AUTHORIZATION START //
+// -- MEMBER -- //
 Route::get('/dashboard/members', [MemberController::class, 'index'])->name('members.index')->middleware('admin');
 
 Route::get('/dashboard/members/create', [MemberController::class, 'create'])->name('members.create')->middleware('admin');
@@ -55,7 +57,7 @@ Route::put('/dashboard/members/{user:username}', [MemberController::class, 'upda
 
 Route::delete('/dashboard/members/{user:username}', [MemberController::class, 'destroy'])->name('members.destroy')->middleware('admin');
 
-// -- AUTHOR --
+// -- AUTHOR -- //
 Route::get('/dashboard/authors', [AuthorController::class, 'index'])->name('authors.index')->middleware('admin');
 
 Route::get('/dashboard/authors/create', [AuthorController::class, 'create'])->name('authors.create')->middleware('admin');
@@ -70,7 +72,7 @@ Route::put('/dashboard/authors/{author:author_code}', [AuthorController::class, 
 
 Route::delete('/dashboard/authors/{author:author_code}', [AuthorController::class, 'destroy'])->name('authors.destroy')->middleware('admin');
 
-// -- PUBLISHER --
+// -- PUBLISHER -- //
 Route::get('/dashboard/publishers', [PublisherController::class, 'index'])->name('publishers.index')->middleware('admin');
 
 Route::get('/dashboard/publishers/create', [PublisherController::class, 'create'])->name('publishers.create')->middleware('admin');
@@ -85,7 +87,7 @@ Route::put('/dashboard/publishers/{publisher:publisher_code}', [PublisherControl
 
 Route::delete('/dashboard/publishers/{publisher:publisher_code}', [PublisherController::class, 'destroy'])->name('publishers.destroy')->middleware('admin');
 
-// -- CATEGORY --
+// -- CATEGORY -- //
 Route::get('/dashboard/categories', [CategoryController::class, 'index'])->name('categories.index')->middleware('admin');
 
 Route::get('/dashboard/categories/create', [CategoryController::class, 'create'])->name('categories.create')->middleware('admin');
@@ -100,7 +102,7 @@ Route::put('/dashboard/categories/{category:category_code}', [CategoryController
 
 Route::delete('/dashboard/categories/{category:category_code}', [CategoryController::class, 'destroy'])->name('categories.destroy')->middleware('admin');
 
-// -- BIBLIOGRAPHY --
+// -- BIBLIOGRAPHY -- //
 Route::get('/dashboard/bibliographies', [BibliographyController::class, 'index'])->name('bibliographies.index')->middleware('admin');
 
 Route::get('/dashboard/bibliographies/create', [BibliographyController::class, 'create'])->name('bibliographies.create')->middleware('admin');
@@ -114,4 +116,28 @@ Route::get('/dashboard/bibliographies/{bibliography:book_code}/edit', [Bibliogra
 Route::put('/dashboard/bibliographies/{bibliography:book_code}', [BibliographyController::class, 'update'])->name('bibliographies.update')->middleware('admin');
 
 Route::delete('/dashboard/bibliographies/{bibliography:book_code}', [BibliographyController::class, 'destroy'])->name('bibliographies.destroy')->middleware('admin');
-// ADMIN AUTHORIZATION END
+
+// -- COLLECTIONS -- //
+Route::get('/dashboard/bibliographies/{bibliography:book_code}/collections/create/', [CollectionController::class, 'create'])->name('collections.create')->middleware('admin');
+
+Route::post('/dashboard/bibliographies/{bibliography:book_code}/collections', [CollectionController::class, 'store'])->name('collections.store')->middleware('admin');
+
+Route::get('/dashboard/collections/{collection:collection_code}/edit', [CollectionController::class, 'edit'])->name('collections.edit')->middleware('admin');
+
+Route::put('/dashboard/collections/{collection:collection_code}', [CollectionController::class, 'update'])->name('collections.update')->middleware('admin');
+
+Route::delete('/dashboard/collections/{collection:collection_code}', [CollectionController::class, 'destroy'])->name('collections.destroy')->middleware('admin');
+
+// -- TRANSACTIONS -- //
+Route::get('/dashboard/transactions', [CirculationController::class, 'index'])->name('circulations.index')->middleware('admin');
+
+Route::get('/dashboard/transactions/{collection:collection_code}/create', [CirculationController::class, 'create'])->name('circulations.create')->middleware('admin');
+
+Route::post('/dashboard/transactions/{collection:collection_code}', [CirculationController::class, 'store'])->name('circulations.store')->middleware('admin');
+
+Route::get('/dashboard/transactions/{circulation:transaction_code}', [CirculationController::class, 'show'])->name('circulations.show')->middleware('admin');
+
+Route::get('/ticket/{circulation:transaction_code}', [CirculationController::class, 'ticket'])->name('ticket');
+
+Route::get('/transaction/{circulation:transaction_code}', [CirculationController::class, 'transaction'])->name('transaction');
+// ADMIN AUTHORIZATION END //

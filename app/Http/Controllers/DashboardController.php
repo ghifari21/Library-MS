@@ -21,8 +21,8 @@ class DashboardController extends Controller
                 'categories' => Category::all(),
                 'members' => Member::all(),
                 'transactions' => Circulation::all(),
-                'borrowed' => Circulation::where('status', 'borrowed')->get(),
-                'returned' => Circulation::where('status', 'returned')->get(),
+                'borrowed' => Circulation::where('status', 'Borrowed')->get(),
+                'returned' => Circulation::where('status', 'Returned')->get(),
                 'exceed' => Circulation::where([
                     ['return_deadline', '<', today()],
                     ['status', 'borrowed']
