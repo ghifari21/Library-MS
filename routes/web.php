@@ -41,6 +41,38 @@ Route::post('/register', [RegisterController::class, 'store'])->name('register.s
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index')->middleware('auth');
 
+Route::get('/bibliographies', [PageController::class, 'bibliographies'])->name('public.bibliographies');
+
+Route::get('/bibliographies/{bibliography:book_code}', [PageController::class, 'detailBiblio'])->name('public.bibliographies.show');
+
+Route::get('/transaction/{collection:collection_code}/create', [PageController::class, 'borrowForm'])->name('member.borrow')->middleware('member');
+
+Route::get('/ticket/{circulation:transaction_code}', [CirculationController::class, 'ticket'])->name('ticket');
+
+Route::get('/transaction/{circulation:transaction_code}', [CirculationController::class, 'transaction'])->name('transaction');
+
+Route::get('/categories', [PageController::class, 'categories'])->name('public.categories');
+
+Route::get('/authors', [PageController::class, 'authors'])->name('public.authors');
+
+Route::get('/publishers', [PageController::class, 'publishers'])->name('public.publishers');
+
+// MEMBER START
+// -- PROFILE -- //
+Route::get('/dashboard/profile/{user:username}', [DashboardController::class, 'profile'])->name('dashboard.profile')->middleware('member');
+
+Route::get('/dashboard/profile/{user:username}/edit', [DashboardController::class, 'editProfile'])->name('dashboard.profile.edit')->middleware('member');
+
+// -- CHANGE PASSWORD -- //
+Route::get('/dashboard/change-password', [DashboardController::class, 'viewChangePassword'])->name('dashboard.change-password')->middleware('member');
+
+Route::post('/dashboard/change-password', [DashboardController::class, 'changePassword'])->middleware('member');
+
+// -- TRANSACTION -- //
+Route::get('/dashboard/transactions/{user:username}', [DashboardController::class, 'transaction'])->name('dashboard.transactions')->middleware('member');
+
+// MEMBER END
+
 // ADMIN AUTHORIZATION START //
 // -- MEMBER -- //
 Route::get('/dashboard/members', [MemberController::class, 'index'])->name('members.index')->middleware('admin');
@@ -53,7 +85,7 @@ Route::get('/dashboard/members/{user:username}', [MemberController::class, 'show
 
 Route::get('/dashboard/members/{user:username}/edit', [MemberController::class, 'edit'])->name('members.edit')->middleware('admin');
 
-Route::put('/dashboard/members/{user:username}', [MemberController::class, 'update'])->name('members.update')->middleware('admin');
+Route::put('/dashboard/members/{user:username}', [MemberController::class, 'update'])->name('members.update');
 
 Route::delete('/dashboard/members/{user:username}', [MemberController::class, 'destroy'])->name('members.destroy')->middleware('admin');
 
@@ -133,13 +165,12 @@ Route::get('/dashboard/transactions', [CirculationController::class, 'index'])->
 
 Route::get('/dashboard/transactions/{collection:collection_code}/create', [CirculationController::class, 'create'])->name('circulations.create')->middleware('admin');
 
-Route::post('/dashboard/transactions/{collection:collection_code}', [CirculationController::class, 'store'])->name('circulations.store')->middleware('admin');
+Route::post('/dashboard/transactions/{collection:collection_code}', [CirculationController::class, 'store'])->name('circulations.store');
 
 Route::get('/dashboard/transactions/{circulation:transaction_code}', [CirculationController::class, 'show'])->name('circulations.show')->middleware('admin');
 
 Route::put('/dashboard/transactions/{circulation:transaction_code}', [CirculationController::class, 'update'])->name('circulations.update')->middleware('admin');
 
-Route::get('/ticket/{circulation:transaction_code}', [CirculationController::class, 'ticket'])->name('ticket');
+Route::get('/dashboard/requests', [CirculationController::class, 'requestToBorrow'])->name('circulations.requestToBorrow')->middleware('admin');
 
-Route::get('/transaction/{circulation:transaction_code}', [CirculationController::class, 'transaction'])->name('transaction');
 // ADMIN AUTHORIZATION END //

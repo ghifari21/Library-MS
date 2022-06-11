@@ -65,6 +65,9 @@
         </tbody>
     </table>
 </div>
+<div class="d-flex justify-content-end">
+    {{ $publishers->links() }}
+</div>
 @else
 <p class="text-center mb-3 fs-5">No publisher found.</p>
 @endif

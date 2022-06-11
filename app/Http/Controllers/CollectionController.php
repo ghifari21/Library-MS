@@ -59,6 +59,9 @@ class CollectionController extends Controller
 
         Collection::create($validatedData);
 
+        $bibliography->increment('stock');
+        $bibliography->save();
+
         return redirect("/dashboard/bibliographies/$bibliography->book_code")->with('success', 'New collection has been added!');
     }
 
@@ -113,6 +116,9 @@ class CollectionController extends Controller
      */
     public function destroy(Collection $collection)
     {
+        $bibliography = Bibliography::firstWhere('id', $collection->bibliography_id);
+        $bibliography->decrement('stock');
+        $bibliography->save();
         Collection::destroy($collection->id);
         $bookCode = $collection->bibliography->book_code;
         return redirect("/dashboard/bibliographies/$bookCode")->with('success', 'Collection has been deleted!');

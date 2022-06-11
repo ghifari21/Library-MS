@@ -1,14 +1,7 @@
 @extends('dashboard.layouts.main')
 
 @section('container')
-<nav class="mt-3" aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/home">Home</a></li>
-    <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Transactions</li>
-  </ol>
-</nav>
-<h2 class="text-center mb-3">Transactions</h2>
+<h2 class="text-center my-3">Transactions</h2>
 @if (session()->has('success'))
 <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
     {{ session('success') }}
@@ -24,11 +17,7 @@
 </div>
 <div class="collapse mb-3" id="filters">
     <div class="card card-body">
-        <form action="/dashboard/transactions" method="get">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Search..." name="search" value="{{ request('search') }}">
-                <button class="btn btn-primary" type="submit" id="search"><span data-feather="search"></span> Search</button>
-            </div>
+        <form action="/dashboard/transactions/{{ auth()->user()->username }}" method="get">
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-floating">
@@ -71,6 +60,9 @@
                     </div>
                 </div>
             </div>
+            <div class="mt-3 text-end">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
         </form>
     </div>
 </div>
@@ -81,7 +73,6 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Transaction Code</th>
-                <th scope="col">Member Name</th>
                 <th scope="col">Bibliography Title</th>
                 <th scope="col">Collection Code</th>
                 <th scope="col">Borrowed Date</th>
@@ -89,7 +80,6 @@
                 <th scope="col">Duration</th>
                 <th scope="col">Return Deadline</th>
                 <th scope="col">Status</th>
-                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody class="table-group-divider">
@@ -97,7 +87,6 @@
             <tr>
                 <th scope="row">{{ $loop->iteration }}</th>
                 <td>{{ $circulation->transaction_code }}</td>
-                <td>{{ $circulation->member->user->name }}</td>
                 <td>{{ $circulation->collection->bibliography->title }}</td>
                 <td>{{ $circulation->collection->collection_code }}</td>
                 <td>{{ \Carbon\Carbon::parse($circulation->borrowed_date)->format('d/m/Y') }}</td>
@@ -111,20 +100,6 @@
                 <td>{{ $circulation->duration }}</td>
                 <td>{{ \Carbon\Carbon::parse($circulation->return_deadline)->format('d/m/Y') }}</td>
                 <td>{{ $circulation->status }}</td>
-                <td>
-                    <a class="badge bg-info" href="/dashboard/transactions/{{ $circulation->transaction_code }}"><span data-feather="eye"></span></a>
-                    <form action="/dashboard/transactions/{{ $circulation->transaction_code }}" method="post" class="d-inline">
-                        @method('put')
-                        @csrf
-                        <input type="hidden" name="status" value="Returned">
-                        <button class="badge bg-warning border-0" type="submit" onclick="return confirm('Are you sure?')"><span data-feather="edit"></span></button>
-                    </form>
-                    <form action="/dashboard/transactions/{{ $circulation->transaction_code }}" method="post" class="d-inline">
-                        @method('delete')
-                        @csrf
-                        <button class="badge bg-danger border-0" type="submit" onclick="return confirm('Are you sure?')"><span data-feather="x-circle"></span></button>
-                    </form>
-                </td>
             </tr>
             @endforeach
         </tbody>

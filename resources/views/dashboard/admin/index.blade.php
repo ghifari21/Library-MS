@@ -14,7 +14,7 @@
         <div class="col-md-4 mb-3">
             <div class="card">
                 <div class="card-body text-center bg-secondary text-light">
-                    <h3 class="card-title">Members</h3>
+                    <h3 class="card-title">Member</h3>
                     <h5 class="card-text mt-3">{{ $members->count() }} Active members</h5>
                     <div class="container-fluid text-start mt-4">
                         <a href="/dashboard/members" class="btn btn-primary">See more</a>
@@ -25,7 +25,18 @@
         <div class="col-md-4 mb-3">
             <div class="card">
                 <div class="card-body text-center bg-secondary text-light">
-                    <h3 class="card-title">Books</h3>
+                    <h3 class="card-title">Bibliography</h3>
+                    <h5 class="card-text mt-3">{{ $bibliographies->count() }} Bibliographies</h5>
+                    <div class="container-fluid text-start mt-4">
+                        <a href="/dashboard/bibliographies" class="btn btn-primary">See more</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body text-center bg-secondary text-light">
+                    <h3 class="card-title">Collection</h3>
                     <h5 class="card-text mt-3">{{ $collections->count() }} Collections</h5>
                     <div class="container-fluid text-start mt-4">
                         <a href="/dashboard/bibliographies" class="btn btn-primary">See more</a>
@@ -36,7 +47,7 @@
         <div class="col-md-4 mb-3">
             <div class="card">
                 <div class="card-body text-center bg-secondary text-light">
-                    <h3 class="card-title">Authors</h3>
+                    <h3 class="card-title">Author</h3>
                     <h5 class="card-text mt-3">{{ $authors->count() }} Authors</h5>
                     <div class="container-fluid text-start mt-4">
                         <a href="/dashboard/authors" class="btn btn-primary">See more</a>
@@ -47,7 +58,7 @@
         <div class="col-md-4 mb-3">
             <div class="card">
                 <div class="card-body text-center bg-secondary text-light">
-                    <h3 class="card-title">Publishers</h3>
+                    <h3 class="card-title">Publisher</h3>
                     <h5 class="card-text mt-3">{{ $publishers->count() }} Publishers</h5>
                     <div class="container-fluid text-start mt-4">
                         <a href="/dashboard/publishers" class="btn btn-primary">See more</a>
@@ -58,7 +69,7 @@
         <div class="col-md-4 mb-3">
             <div class="card">
                 <div class="card-body text-center bg-secondary text-light">
-                    <h3 class="card-title">Categories</h3>
+                    <h3 class="card-title">Category</h3>
                     <h5 class="card-text mt-3">{{ $categories->count() }} Categories</h5>
                     <div class="container-fluid text-start mt-4">
                         <a href="/dashboard/categories" class="btn btn-primary">See more</a>
@@ -69,7 +80,7 @@
         <div class="col-md-4 mb-3">
             <div class="card">
                 <div class="card-body text-center bg-secondary text-light">
-                    <h3 class="card-title">Transactions</h3>
+                    <h3 class="card-title">Transaction</h3>
                     <h5 class="card-text mt-3">{{ $transactions->count() }} Transactions</h5>
                     <div class="container-fluid text-start mt-4">
                         <a href="/dashboard/transactions" class="btn btn-primary">See more</a>
@@ -80,10 +91,21 @@
         <div class="col-md-4 mb-3">
             <div class="card">
                 <div class="card-body text-center bg-secondary text-light">
+                    <h3 class="card-title">Request to Borrow</h3>
+                    <h5 class="card-text mt-3">{{ $requests->count() }} Requests to borrow</h5>
+                    <div class="container-fluid text-start mt-4">
+                        <a href="/dashboard/requests" class="btn btn-primary">See more</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body text-center bg-secondary text-light">
                     <h3 class="card-title">Borrowed</h3>
                     <h5 class="card-text mt-3">{{ $borrowed->count() }} Borrowed collections</h5>
                     <div class="container-fluid text-start mt-4">
-                        <a href="/categories/transactions/borrowed" class="btn btn-primary">See more</a>
+                        <a href="/dashboard/transactions?status=Borrowed" class="btn btn-primary">See more</a>
                     </div>
                 </div>
             </div>
@@ -94,7 +116,7 @@
                     <h3 class="card-title">Returned</h3>
                     <h5 class="card-text mt-3">{{ $returned->count() }} Returned collections</h5>
                     <div class="container-fluid text-start mt-4">
-                        <a href="/categories/transactions/returned" class="btn btn-primary">See more</a>
+                        <a href="/dashboard/transactions?status=Returned" class="btn btn-primary">See more</a>
                     </div>
                 </div>
             </div>
@@ -105,7 +127,7 @@
                     <h3 class="card-title">Exceeded Deadline</h3>
                     <h5 class="card-text mt-3">{{ $exceed->count() }} Collections</h5>
                     <div class="container-fluid text-start mt-4">
-                        <a href="/categories/transactions/exceeded-deadline" class="btn btn-primary">See more</a>
+                        <a href="/dashboard/transactions?needToReturn=1" class="btn btn-primary">See more</a>
                     </div>
                 </div>
             </div>

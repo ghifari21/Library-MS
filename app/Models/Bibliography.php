@@ -10,6 +10,7 @@ class Bibliography extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+    protected $with = ['author', 'publisher', 'category'];
 
     public function scopeFilter($query, array $filters) {
         $query->when($filters['search'] ?? false, function($query, $search) {

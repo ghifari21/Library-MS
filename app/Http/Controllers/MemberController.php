@@ -113,7 +113,11 @@ class MemberController extends Controller
         User::where('id', $user->id)->update($userData);
         Member::where('user_id', $user->id)->update($memberData);
 
-        return redirect('/dashboard/members')->with('success', 'Update member profile successfull!');
+        if (auth()->user()->account_type === 'admin') {
+            return redirect('/dashboard/members')->with('success', 'Update member profile successfull!');
+        } else {
+            return redirect('/dashboard/profile/' . auth()->user()->username)->with('success', 'Your profile has been updated!');
+        }
     }
 
     public function destroy(User $user) {

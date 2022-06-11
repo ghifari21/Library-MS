@@ -47,8 +47,40 @@
                 Transactions
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('dashboard/requests*') ? 'active' : '' }}" href="/dashboard/requests">
+                <span data-feather="send" class="align-text-bottom"></span>
+                Request
+                </a>
+            </li>
             @else
-
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mb-1 text-muted">
+                <span>Member</span>
+            </h6>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" aria-current="page" href="/dashboard">
+                <span data-feather="home" class="align-text-bottom"></span>
+                Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('dashboard/profile*') ? 'active' : '' }}" aria-current="page" href="/dashboard/profile/{{ auth()->user()->username }}">
+                <span data-feather="user" class="align-text-bottom"></span>
+                Profile
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('dashboard/change-password*') ? 'active' : '' }}" aria-current="page" href="/dashboard/change-password">
+                <span data-feather="lock" class="align-text-bottom"></span>
+                Change Password
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('dashboard/transactions*') ? 'active' : '' }}" aria-current="page" href="/dashboard/transactions/{{ auth()->user()->username }}">
+                <span data-feather="list" class="align-text-bottom"></span>
+                Transactions
+                </a>
+            </li>
             @endif
         </ul>
         <ul class="nav flex-column justify-content-end mb-4" style="heigth: 100%">

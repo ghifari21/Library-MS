@@ -63,6 +63,9 @@
         </tbody>
     </table>
 </div>
+<div class="d-flex justify-content-end">
+    {{ $members->links() }}
+</div>
 @else
 <p class="text-center mb-3 fs-5">No member found.</p>
 @endif

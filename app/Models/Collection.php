@@ -10,6 +10,7 @@ class Collection extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+    protected $with = ['bibliography'];
 
     public function bibliography() {
         return $this->belongsTo(Bibliography::class);

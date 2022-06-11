@@ -1,32 +1,16 @@
-@extends('dashboard.layouts.main')
+@extends('layouts.main')
 
 @section('container')
-<nav class="mt-3" aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/home">Home</a></li>
-    <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Bibliographies</li>
-  </ol>
-</nav>
-<h2 class="text-center mb-3">Bibliographies</h2>
-@if (session()->has('success'))
-<div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
-    {{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@endif
+<h2 class="text-center">Bibliographies</h2>
 <div class="row">
     <div class="col-md-6">
-        <a class="btn btn-primary mb-3" href="/dashboard/bibliographies/create"><span data-feather="plus"></span> Add Bibliography</a>
-    </div>
-    <div class="col-md-6 text-end">
         <a class="btn btn-primary mb-3 ms-0" data-bs-toggle="collapse" href="#filters" role="button" aria-expanded="false" aria-controls="filters">
             <span data-feather="filter"></span> Filter
         </a>
     </div>
 </div>
 <div class="collapse mb-3" id="filters">
-    <div class="card card-body">
+    <div class="card card-body shadow-sm">
         <form action="/dashboard/bibliographies" method="get">
             <div class="input-group mb-3">
                 <input type="text" class="form-control" placeholder="Search..." name="search" value="{{ request('search') }}">
@@ -86,57 +70,33 @@
         </form>
     </div>
 </div>
+<div class="row mx-auto mt-5">
 @if ($bibliographies->count())
-<div class="table-responsive">
-    <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Book Code</th>
-                <th scope="col">ISBN</th>
-                <th scope="col">Title</th>
-                <th scope="col">Author</th>
-                <th scope="col">Publisher</th>
-                <th scope="col">Category</th>
-                <th scope="col">Published Year</th>
-                <th scope="col">Language</th>
-                <th scope="col">Stock</th>
-                <th scope="col">Last Updated</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody class="table-group-divider">
-            @foreach ($bibliographies as $bibliography)
-            <tr>
-                <th scope="row">{{ $loop->iteration }}</th>
-                <td>{{ $bibliography->book_code }}</td>
-                <td>{{ $bibliography->isbn }}</td>
-                <td>{{ $bibliography->title }}</td>
-                <td>{{ $bibliography->author->name }}</td>
-                <td>{{ $bibliography->publisher->name }}</td>
-                <td>{{ $bibliography->category->name }}</td>
-                <td>{{ $bibliography->published_year }}</td>
-                <td>{{ $bibliography->language }}</td>
-                <td>{{ $bibliography->stock }}</td>
-                <td>{{ $bibliography->updated_at->diffForHumans() }}</td>
-                <td>
-                    <a class="badge bg-info" href="/dashboard/bibliographies/{{ $bibliography->book_code }}"><span data-feather="eye"></span></a>
-                    <a class="badge bg-warning" href="/dashboard/bibliographies/{{ $bibliography->book_code }}/edit"><span data-feather="edit"></span></a>
-                    <form action="/dashboard/bibliographies/{{ $bibliography->book_code }}" method="post" class="d-inline">
-                        @method('delete')
-                        @csrf
-                        <button class="badge bg-danger border-0" type="submit" onclick="return confirm('Are you sure?')"><span data-feather="x-circle"></span></button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+    @foreach ($bibliographies as $bibliography)
+        <div class="col-md-3 mb-3" style="width: 20%">
+            <div class="card shadow-sm">
+                <a href="/bibliographies/{{ $bibliography->book_code }}">
+                    <img src="
+                    @if ($bibliography->photo)
+                        {{ asset('storage/' . $bibliography->photo) }}
+                    @else
+                        /img/blank-cover.png
+                    @endif
+                    " alt="{{ $bibliography->name }}" class="card-img-top">
+                </a>
+                <div class="card-body">
+                    <a class="card-title text-center fs-4 text-dark text-decoration-none" href="/bibliographies/{{ $bibliography->book_code }}">{{ $bibliography->title }}</a>
+                    <p class="card-text mt-3">Written by: <a class="text-decoration-none" href="/bibliographies?author={{ $bibliography->author->author_code }}">{{ $bibliography->author->name }}</a></p>
+                </div>
+            </div>
+        </div>
+    @endforeach
 <div class="d-flex justify-content-end">
     {{ $bibliographies->links() }}
 </div>
 @else
-<p class="text-center mb-3 fs-5">No bibliography found.</p>
+    <p class="text-center mb-3 fs-5">No bibliography found.</p>
 @endif
+</div>
+
 @endsection

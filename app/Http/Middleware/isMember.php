@@ -17,7 +17,7 @@ class isMember
     public function handle(Request $request, Closure $next)
     {
         if (auth()->guest() || auth()->user()->account_type !== "member") {
-            abort(403);
+            return redirect('/login');
         }
 
         return $next($request);

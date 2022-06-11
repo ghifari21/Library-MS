@@ -5,10 +5,10 @@
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/home">Home</a></li>
     <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Transactions</li>
+    <li class="breadcrumb-item active" aria-current="page">Request To Borrow</li>
   </ol>
 </nav>
-<h2 class="text-center mb-3">Transactions</h2>
+<h2 class="text-center mb-3">Request To Borrow</h2>
 @if (session()->has('success'))
 <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
     {{ session('success') }}
@@ -24,24 +24,13 @@
 </div>
 <div class="collapse mb-3" id="filters">
     <div class="card card-body">
-        <form action="/dashboard/transactions" method="get">
+        <form action="/dashboard/requests" method="get">
             <div class="input-group mb-3">
                 <input type="text" class="form-control" placeholder="Search..." name="search" value="{{ request('search') }}">
                 <button class="btn btn-primary" type="submit" id="search"><span data-feather="search"></span> Search</button>
             </div>
             <div class="row">
-                <div class="col-md-3">
-                    <div class="form-floating">
-                        <select class="form-select" id="status" aria-label="Floating label select example" name="status">
-                            <option selected value="">Select transaction status</option>
-                            <option value="Borrowed" {{ request('status') === 'Borrowed' ? 'selected' : '' }}>Borrowed</option>
-                            <option value="Returned" {{ request('status') === 'Returned' ? 'selected' : '' }}>Returned</option>
-                            <option value="Pending" {{ request('status') === 'Pending' ? 'selected' : '' }}>Pending</option>
-                        </select>
-                        <label for="author">Status</label>
-                    </div>
-                </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-floating">
                         <select class="form-select" id="duration" aria-label="Floating label select example" name="duration">
                             <option selected value="">Select borrowing duration</option>
@@ -52,22 +41,16 @@
                         <label for="author">Duration</label>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <div class="form-floating">
                         <input type="date" class="form-control" name="borrowed_date" id="borrowed_date" value="{{ request('borrowed_date') }}">
                         <label for="floatingInput">Borrowed Date</label>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <div class="form-floating">
                         <input type="date" class="form-control" name="return_deadline" id="return_deadline" value="{{ request('return_deadline') }}">
                         <label for="floatingInput">Return Deadline</label>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-floating">
-                        <input type="date" class="form-control" name="returned_date" id="returned_date" value="{{ request('return_date') }}">
-                        <label for="floatingInput">Returned Date</label>
                     </div>
                 </div>
             </div>
@@ -112,12 +95,11 @@
                 <td>{{ \Carbon\Carbon::parse($circulation->return_deadline)->format('d/m/Y') }}</td>
                 <td>{{ $circulation->status }}</td>
                 <td>
-                    <a class="badge bg-info" href="/dashboard/transactions/{{ $circulation->transaction_code }}"><span data-feather="eye"></span></a>
                     <form action="/dashboard/transactions/{{ $circulation->transaction_code }}" method="post" class="d-inline">
                         @method('put')
                         @csrf
-                        <input type="hidden" name="status" value="Returned">
-                        <button class="badge bg-warning border-0" type="submit" onclick="return confirm('Are you sure?')"><span data-feather="edit"></span></button>
+                        <input type="hidden" name="status" value="Borrowed">
+                        <button class="badge bg-info border-0" type="submit" onclick="return confirm('Are you sure?')"><span data-feather="check"></span></button>
                     </form>
                     <form action="/dashboard/transactions/{{ $circulation->transaction_code }}" method="post" class="d-inline">
                         @method('delete')

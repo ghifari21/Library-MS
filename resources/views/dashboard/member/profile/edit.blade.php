@@ -1,16 +1,7 @@
 @extends('dashboard.layouts.main')
 
 @section('container')
-<nav class="mt-3" aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/home">Home</a></li>
-    <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="/dashboard/members">Members</a></li>
-    <li class="breadcrumb-item"><a href="/dashboard/members/{{ $member->user->username }}">{{ $member->user->name }}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Edit</li>
-  </ol>
-</nav>
-<h2 class="text-center mb-3">Edit Form</h2>
+<h2 class="text-center my-3">Edit Profile</h2>
 <div class="row justify-content-center">
     <div class="col-lg-8">
         <main class="form-registration w-100 mt-3 mb-5">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bibliography;
 use App\Models\Member;
 use App\Models\Collection;
 use App\Models\Circulation;
@@ -17,8 +18,16 @@ class CirculationController extends Controller
      */
     public function index()
     {
+        if (request('needToReturn') != 1) {
+            $circulation = Circulation::where('status', '!=', 'Pending')->filter(request(['search', 'duration', 'status', 'borrowed_date', 'returned_date', 'return_deadline']))->paginate(25)->withQueryString();
+        } else {
+            $circulation = Circulation::where([
+                ['status', 'Borrowed'],
+                ['return_deadline', '<', today()]
+            ])->filter(request(['search', 'duration', 'status', 'borrowed_date', 'returned_date', 'return_deadline']))->paginate(25)->withQueryString();
+        }
         return view('dashboard.admin.transactions.index', [
-            'circulations' => Circulation::orderBy('status')->get()
+            'circulations' => $circulation
         ]);
     }
 
@@ -55,7 +64,11 @@ class CirculationController extends Controller
         ]);
 
         if ($borrowedCollectionByMember->count() >= 5) {
-            return redirect("/dashboard/members/$member->member_code")->with('failed', 'This member has exceeded the borrowing limit!');
+            if (auth()->user()->account_type === 'admin') {
+                return redirect("/dashboard/members/$member->member_code")->with('failed', 'This member has exceeded the borrowing limit!');
+            } else {
+                return redirect('/dashboard')->with('failed', 'You has exceeded the borrowing limit!');
+            }
         }
 
         $validatedData = $request->validate([
@@ -65,7 +78,6 @@ class CirculationController extends Controller
 
         $validatedData['member_id'] = $member->id;
         $validatedData['collection_id'] = $collection->id;
-        $validatedData['is_available'] = 0;
 
         $date_interval = $validatedData['duration'] . ' day';
         $date_in = date_create($validatedData['borrowed_date']);
@@ -80,6 +92,17 @@ class CirculationController extends Controller
         } else {
             $validatedData['transaction_code'] = 'TC-' . $date . '-1';
         }
+
+        if (auth()->user()->account_type === 'member') {
+            $validatedData['status'] = 'Pending';
+        }
+
+        $collection->is_available = false;
+        $collection->save();
+
+        $bibliography = Bibliography::firstWhere('id', $collection->bibliography_id);
+        $bibliography->decrement('stock');
+        $bibliography->save();
 
         Circulation::create($validatedData);
         $code = $validatedData['transaction_code'];
@@ -123,11 +146,25 @@ class CirculationController extends Controller
             'status' => 'required'
         ]);
 
-        $validatedData['returned_date'] = today();
+        if ($validatedData['status'] === 'Borrowed') {
+            Circulation::where('id', $circulation->id)->update($validatedData);
 
-        Circulation::where('id', $circulation->id)->update($validatedData);
+            return redirect('/dashboard/requests')->with('success', 'This request has been accepted!');
+        } else {
+            $validatedData['returned_date'] = today();
 
-        return redirect('/dashboard/transactions')->with('success', 'Collection has been returned!');
+            $collection = Collection::firstWhere('id', $circulation->collection->id);
+            $collection->is_available = true;
+            $collection->save();
+
+            $bibliography = Bibliography::firstWhere('id', $collection->bibliography_id);
+            $bibliography->increment('stock');
+            $bibliography->save();
+
+            Circulation::where('id', $circulation->id)->update($validatedData);
+
+            return redirect('/dashboard/transactions')->with('success', 'Collection has been returned!');
+        }
     }
 
     /**
@@ -138,7 +175,9 @@ class CirculationController extends Controller
      */
     public function destroy(Circulation $circulation)
     {
-        //
+        Circulation::destroy($circulation->id);
+
+        return redirect('/dashboard/transactions')->with('success', 'This transaction has been deleted!');
     }
 
     /**
@@ -151,7 +190,7 @@ class CirculationController extends Controller
         return view('transaction.ticket', [
             'title' => 'Ticket',
             'circulation' => $circulation,
-            'qrCode' => QrCode::size(200)->generate('http://library.test/transaction/' . $circulation->transaction_code)
+            'qrCode' => QrCode::size(200)->generate(env('APP_URL') . '/transaction/' . $circulation->transaction_code)
         ]);
     }
 
@@ -166,5 +205,35 @@ class CirculationController extends Controller
             'title' => 'Detail',
             'circulation' => $circulation
         ]);
+    }
+
+    /**
+     * Show request to borrow a book from member
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function requestToBorrow() {
+        return view('dashboard.admin.transactions.request', [
+            'circulations' => Circulation::where('status', 'Pending')->filter(request(['search', 'duration', 'borrowed_date', 'return_deadline']))->paginate(25)->withQueryString()
+        ]);
+    }
+
+    /**
+     * Reject request to borrow a book from member
+     *
+     * @param \App\Models\Circulation $circulation
+     * @return \Illuminate\Http\Response
+     */
+    public function rejectRequest(Circulation $circulation) {
+        $collection = Collection::firstWhere('collection_id', $circulation->collection_id);
+        $collection->is_available = true;
+        $collection->save();
+        $bibliography = Bibliography::firstWhere('id', $collection->bibliography_id);
+        $bibliography->increment('stock');
+        $bibliography->save();
+
+        Circulation::destroy($circulation->id);
+
+        return redirect('/dashboard/request')->with('success', 'This request has been rejected!');
     }
 }
