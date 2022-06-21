@@ -116,7 +116,7 @@
                 <div class="mb-3">
                     <label for="photo" class="form-label">Cover</label>
                     <input class="form-control @error('photo') is-invalid @enderror" type="file" id="photo" name="photo" onchange="previewImage()">
-                    <img class="img-preview img-thumbnail rounded-circle my-3 col-sm-3 d-none">
+                    <img class="img-preview img-thumbnail my-3 col-sm-3 d-none">
                     @error('photo')
                         <div class="invalid-feedback">
                             {{ $message }}

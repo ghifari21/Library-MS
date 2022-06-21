@@ -120,9 +120,9 @@
                     <input type="hidden" name="old_photo" value="{{ $bibliography->photo }}">
                     <input class="form-control @error('photo') is-invalid @enderror" type="file" id="photo" name="photo" onchange="previewImage()">
                     @if ($bibliography->photo)
-                        <img class="img-preview img-thumbnail rounded-circle my-3 col-sm-3" src="{{ asset('storage/' . $bibliography->photo) }}">
+                        <img class="img-preview img-thumbnail my-3 col-sm-3" src="{{ asset('storage/' . $bibliography->photo) }}">
                     @else
-                        <img class="img-preview img-thumbnail rounded-circle my-3 col-sm-3 d-none">
+                        <img class="img-preview img-thumbnail my-3 col-sm-3 d-none">
                     @endif
                     @error('photo')
                         <div class="invalid-feedback">
