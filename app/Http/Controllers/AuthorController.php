@@ -17,7 +17,7 @@ class AuthorController extends Controller
     public function index()
     {
         return view('dashboard.admin.authors.index', [
-            'authors' => Author::filter(request(['search']))->orderBy('author_code', 'ASC')->paginate(25)->withQueryString()
+            'authors' => Author::filter(request(['search']))->orderBy('author_code', 'ASC')->paginate(10)->withQueryString()
         ]);
     }
 

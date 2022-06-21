@@ -13,7 +13,7 @@ class MemberController extends Controller
 {
     public function index() {
         return view('dashboard.admin.members.index', [
-            'members' => Member::filter(request(['search']))->orderBy('member_code', 'ASC')->paginate(25)->withQueryString()
+            'members' => Member::filter(request(['search']))->orderBy('member_code', 'ASC')->paginate(10)->withQueryString()
         ]);
     }
 

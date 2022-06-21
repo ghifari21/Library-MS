@@ -29,7 +29,7 @@ class PageController extends Controller
     public function bibliographies() {
         return view('browse', [
             'title' => 'Bibliographies',
-            'bibliographies' => Bibliography::filter(request(['search', 'author', 'publisher', 'category', 'language', 'published_year']))->orderBy('book_code', 'ASC')->paginate(25)->withQueryString(),
+            'bibliographies' => Bibliography::filter(request(['search', 'author', 'publisher', 'category', 'language', 'published_year']))->orderBy('book_code', 'ASC')->paginate(10)->withQueryString(),
             'authors' => Author::all(),
             'categories' => Category::all(),
             'publishers' => Publisher::all(),
@@ -55,21 +55,21 @@ class PageController extends Controller
     public function categories() {
         return view('categories', [
             'title' => 'Categories',
-            'categories' => Category::filter(request(['search']))->orderBy('name', 'ASC')->paginate(25)->withQueryString()
+            'categories' => Category::filter(request(['search']))->orderBy('name', 'ASC')->paginate(10)->withQueryString()
         ]);
     }
 
     public function authors() {
         return view('authors', [
             'title' => 'Authors',
-            'authors' => Author::filter(request(['search']))->orderBy('name', 'ASC')->paginate(25)->withQueryString()
+            'authors' => Author::filter(request(['search']))->orderBy('name', 'ASC')->paginate(10)->withQueryString()
         ]);
     }
 
     public function publishers() {
         return view('publishers', [
             'title' => 'Publishers',
-            'publishers' => Publisher::filter(request(['search']))->orderBy('name', 'ASC')->paginate(25)->withQueryString()
+            'publishers' => Publisher::filter(request(['search']))->orderBy('name', 'ASC')->paginate(10)->withQueryString()
         ]);
     }
 }

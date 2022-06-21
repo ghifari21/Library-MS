@@ -16,7 +16,7 @@ class CategoryController extends Controller
     public function index()
     {
         return view('dashboard.admin.categories.index', [
-            'categories' => Category::filter(request(['search']))->orderBy('category_code', 'ASC')->paginate(25)->withQueryString()
+            'categories' => Category::filter(request(['search']))->orderBy('category_code', 'ASC')->paginate(10)->withQueryString()
         ]);
     }
 

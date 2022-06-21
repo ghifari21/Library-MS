@@ -20,7 +20,7 @@ class BibliographyController extends Controller
     public function index()
     {
         return view('dashboard.admin.bibliographies.index', [
-            'bibliographies' => Bibliography::filter(request(['search', 'author', 'publisher', 'category', 'language', 'published_year']))->orderBy('book_code', 'ASC')->paginate(25)->withQueryString(),
+            'bibliographies' => Bibliography::filter(request(['search', 'author', 'publisher', 'category', 'language', 'published_year']))->orderBy('book_code', 'ASC')->paginate(10)->withQueryString(),
             'authors' => Author::all(),
             'publishers' => Publisher::all(),
             'categories' => Category::all()

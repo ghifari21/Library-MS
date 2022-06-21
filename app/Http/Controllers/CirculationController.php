@@ -19,7 +19,7 @@ class CirculationController extends Controller
     public function index()
     {
         if (request('needToReturn') != 1) {
-            $circulation = Circulation::where('status', '!=', 'Pending')->filter(request(['search', 'duration', 'status', 'borrowed_date', 'returned_date', 'return_deadline']))->paginate(25)->withQueryString();
+            $circulation = Circulation::where('status', '!=', 'Pending')->filter(request(['search', 'duration', 'status', 'borrowed_date', 'returned_date', 'return_deadline']))->paginate(10)->withQueryString();
         } else {
             $circulation = Circulation::where([
                 ['status', 'Borrowed'],
